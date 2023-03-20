@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "199575634029",
+    "firebase_url": "https://cowcare-e00f4-default-rtdb.firebaseio.com",
+    "project_id": "cowcare-e00f4",
+    "storage_bucket": "cowcare-e00f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199575634029:android:e8c22152a5b581c339ff64",
+        "android_client_info": {
+          "package_name": "com.example.cowcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199575634029-mvtrt0d80aiosgj6e125i50h9aevsine.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDGsMcTCh6omrT5cqLSA5gzixS-GXJ8Cg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199575634029-mvtrt0d80aiosgj6e125i50h9aevsine.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199575634029:android:eda5ed5c932bb5ac39ff64",
+        "android_client_info": {
+          "package_name": "com.example.cowcareadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199575634029-mvtrt0d80aiosgj6e125i50h9aevsine.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDGsMcTCh6omrT5cqLSA5gzixS-GXJ8Cg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199575634029-mvtrt0d80aiosgj6e125i50h9aevsine.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

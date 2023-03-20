@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cowcareadmin.databinding.FragmentHomeBinding
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class Home : Fragment() {
     private var _binding: FragmentHomeBinding? = null
