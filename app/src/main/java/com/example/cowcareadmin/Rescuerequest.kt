@@ -1,59 +1,79 @@
 package com.example.cowcareadmin
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cowcareadmin.databinding.FragmentRescuerequestBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Rescuerequest.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Rescuerequest : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentRescuerequestBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+    private lateinit var Adapter: ChatAdapter
+    lateinit var mdatabase: DatabaseReference
+    private var messagelist = ArrayList<ChatModel>()
+    var receiverroom: String? = null
+    var senderroom: String? = null
+    var senderuid="User"
+    var receiveruid="Admin"
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            _binding = FragmentRescuerequestBinding.inflate(inflater, container, false)
+            val root: View = binding.root
+//            receiveruid=""
+//            senderuid= FirebaseAuth.getInstance().currentUser?.uid
+            mdatabase= FirebaseDatabase.getInstance().reference
+            Adapter= activity?.applicationContext?.let { ChatAdapter(it,messagelist) }!!
+            senderroom=senderuid+receiveruid
+            receiverroom=receiveruid+senderuid
+            savingchattodatabase()
+            showdatainrv()
+            return root
+
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rescuerequest, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Rescuerequest.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Rescuerequest().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    fun showdatainrv(){
+        mdatabase.child("chat").child(senderroom!!).child("message")
+            .addValueEventListener(object : ValueEventListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    messagelist.clear()
+                    for(e in snapshot.children){
+                        val message=e.getValue(ChatModel::class.java)
+                        messagelist.add(message!!)
+//                        Log.d("sand", message.message.toString())
+                    }
+                    Adapter.notifyDataSetChanged()
                 }
-            }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        binding.chatrecyclerview.layoutManager=LinearLayoutManager(activity)
+        binding.chatrecyclerview.adapter=Adapter
+    }
+
+    fun savingchattodatabase(){
+        binding.sendbutton.setOnClickListener {
+            val message=binding.Message.editText!!.text.toString()
+            val messageobject= ChatModel(message,senderuid)
+            mdatabase.child("chat").child(senderroom!!).child("message").push()
+                .setValue(messageobject).addOnSuccessListener {
+                    mdatabase.child("chat").child(receiverroom!!).child("message").push()
+                        .setValue(messageobject)
+                }
+            binding.Message.editText!!.setText("")
+        }
     }
 }
